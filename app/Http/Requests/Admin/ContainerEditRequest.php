@@ -1,0 +1,38 @@
+<?php
+
+namespace App\Http\Requests\Admin;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class ContainerEditRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'code' => ['required', 'string', 'max:255', 'unique:containers,code,' . $this->route('container')],
+            'purchase_type' => ['required', 'string', 'in:purchase,rent'],
+            'purchase_date' => ['required', 'date'],
+            'count' => ['required', 'integer', 'min:0'],
+            'price' => ['required', 'numeric', 'min:0.00'],
+            'price_currency' => ['required', 'string', 'exists:currencies,code'],
+            'vendor_id' => ['required', 'integer', 'exists:vendors,id'],
+            'container_type_id' => ['required', 'integer', 'exists:container_types,id'],
+            'last_payment_date' => ['required', 'date'],
+            'images' => ['nullable', 'array'],
+            'images.*' => ['required', 'file'],
+        ];
+    }
+}

@@ -1,0 +1,24 @@
+<?php
+
+namespace App\Models;
+
+use App\Enums\OrderStatus;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class OrderItemStatusChange extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'status',
+        'order_item_id',
+    ];
+
+    public function order_item()
+    {
+        return $this->belongsTo(OrderItem::class, 'order_item_id');
+    }
+
+    protected $casts = ['status' => OrderStatus::class];
+}
